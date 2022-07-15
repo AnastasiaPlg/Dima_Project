@@ -11,14 +11,19 @@ public class MainClass {
         String pass = "root";
         try {
             StudentsBase studentsBase = StudentsBase.getStudentsBase();
-            Connection connection = studentsBase.createConnection(user,pass);
-            //studentsBase.getAllStudents(connection).forEach(System.out::println);
-            String studentStr = Input.input("Enter full name of student: ");
-            Student student = new Student();
-            student = student.convertStudent(studentStr);
-            //studentsBase.addStudent(connection, student);
-            studentsBase.addAverageScore(connection, student, "9.0");
-        } catch (SQLException | WrongStudentNameException e) {
+            Statement statement = studentsBase.createConnection(user, pass);
+            while (true) {
+                Student student = Input.inputStudent();
+                studentsBase.addStudent(statement, student);
+                student.setAverageScore(Input.inputAverageScore());
+                studentsBase.addAverageScore(statement, student);
+                System.out.println(studentsBase.findStudent(statement, Input.inputId()));
+                System.out.println(studentsBase.findGreatStudents(studentsBase.getAllStudents(statement), 8.0).toString());
+                if (Input.isEnough()) {
+                    break;
+                }
+            }
+        } catch (SQLException | WrongIdException e) {
             System.out.println(e);
         }
     }

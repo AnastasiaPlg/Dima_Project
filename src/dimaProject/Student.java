@@ -6,7 +6,7 @@ public class Student {
     private String id;
     private String firstName;
     private String secondName;
-    private String averageScore;
+    private double averageScore;
 
     public Student() {
 
@@ -21,6 +21,13 @@ public class Student {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
+    }
+
+    public Student(String id, String firstName, String secondName, double averageScore) {
+        this.id = id;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.averageScore = averageScore;
     }
 
     public String getId() {
@@ -47,33 +54,24 @@ public class Student {
         this.secondName = secondName;
     }
 
-    public String getAverageScore() {
+    public double getAverageScore() {
         return averageScore;
     }
 
-    public void setAverageScore(String averageScore) {
+    public void setAverageScore(double averageScore) {
         this.averageScore = averageScore;
     }
 
     @Override
     public String toString() {
-        String line = id + "\t" + firstName + " " + secondName;
-        if (averageScore != null) {
-            line = line + " \t " + averageScore;
+        String line = "";
+        if (id != null && averageScore != 0) {
+            line = id + "\t" + firstName + " " + secondName + ", average score: " + averageScore;
+        } else if (id != null) {
+            line = id + "\t" + firstName + " " + secondName;
+        } else {
+            line = firstName + " " + secondName;
         }
         return line;
     }
-
-    public Student convertStudent(String firstNameAndSecondName) throws WrongStudentNameException {
-        String[] strings = firstNameAndSecondName.split(" ");
-        System.out.println(Arrays.toString(strings));
-        if (strings.length == 2) {
-            this.firstName = strings[0];
-            this.secondName = strings[1];
-        } else {
-            throw new WrongStudentNameException();
-        }
-        return this;
-    }
-
 }
